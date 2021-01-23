@@ -108,6 +108,9 @@ body {
 	line-height: 50px;
 }
 .accept {
+    background: #02918c;
+}
+.danger {
     background: crimson;
 }
 .cancel {
@@ -118,9 +121,12 @@ body {
     background: brown;
     color: white;
 }
-
 .cancel:hover {
     background: #33363b;
+    color: white;
+}
+.accept:hover {
+    background: darkslategrey;
     color: white;
 }
 .pre {

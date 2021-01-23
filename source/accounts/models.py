@@ -46,9 +46,10 @@ class Profile(models.Model):
                                               on_delete=models.CASCADE, verbose_name='Пользователь')
     birth_date = models.DateField(null=True, blank=True, verbose_name='Дата рождения')
     avatar = models.ImageField(null=True, blank=True, upload_to='user_pics', verbose_name='Аватар')
-    relationships = models.ManyToManyField('Profile', through='Relationship',
+    relationships = models.ManyToManyField('accounts.Profile', through='Relationship',
                                            symmetrical=False,
                                            related_name='related_to')
+    message = models.ManyToManyField('accounts.Profile', through='webapp.Messages', related_name='profiles', verbose_name='сообщение')
 
     def __str__(self):
         return self.user.get_full_name() + "'s Profile"
@@ -59,8 +60,8 @@ class Profile(models.Model):
 
 
 class Relationship(models.Model):
-    from_person = models.ForeignKey(Profile, related_name='from_people', on_delete=models.PROTECT, verbose_name='от_человека')
-    to_person = models.ForeignKey(Profile, related_name='to_people', on_delete=models.PROTECT,verbose_name='к_человеку')
+    from_person = models.ForeignKey('accounts.Profile', related_name='from_people', on_delete=models.PROTECT, verbose_name='от_человека')
+    to_person = models.ForeignKey('accounts.Profile', related_name='to_people', on_delete=models.PROTECT,verbose_name='к_человеку')
 
     class Meta:
         verbose_name = 'Друг/Подруга'

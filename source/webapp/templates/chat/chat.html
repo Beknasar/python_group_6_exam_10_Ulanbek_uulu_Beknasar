@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}View{% endblock %}
+
+{% block menu %}
+{% endblock %}
+{% block content %}
+    <div>
+        {% for rev_sent in received_messages %}
+        {% endfor %}
+
+        {% if is_paginated %}
+            {% include 'partial/pagination.html' %}
+        {% endif %}
+    </div>
+{% endblock %}

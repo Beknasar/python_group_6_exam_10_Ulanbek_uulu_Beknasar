@@ -22,11 +22,16 @@
     <p>Фамилия: {{ user_obj.last_name }}</p>
     <p>Дата рождения: {{ user_obj.profile.birth_date|date:'d.m.Y' }}</p>
     <p>Почта: {{ user_obj.email }}</p>
-    {% if user_obj.profile in request.user.profile.relationships.all %}
-        <h3><a href="{% url "api:friend_remove" user_obj.pk %}" class="button accept removeFriend">Удалить из друзей</a></h3>
-    {% else %}
-        <h3><a href="{% url "api:friend_add" user_obj.pk %}" class="button cancel addFriend">Добавить в друзья</a></h3>
-    {% endif %}
+    <div class="card-button">
+        {% if request.user.is_authenticated %}
+            <h3><a href="#" class="button accept" style="color: white">Отправить сообщение</a></h3>
+        {% endif %}
+        {% if user_obj.profile in request.user.profile.relationships.all %}
+            <h3><a href="{% url "api:friend_remove" user_obj.pk %}" class="button danger removeFriend">Удалить из друзей</a></h3>
+        {% else %}
+            <h3><a href="{% url "api:friend_add" user_obj.pk %}" class="button cancel addFriend">Добавить в друзья</a></h3>
+        {% endif %}
+    </div>
 {% endblock %}
 {% block scripts %}
     <script type="application/javascript" src="{% static "js/friends.js" %}"></script>
