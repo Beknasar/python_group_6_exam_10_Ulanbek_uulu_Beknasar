@@ -1,9 +1,11 @@
 import json
-from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
+
+from django.contrib.auth.models import User
+from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
 from django.views.decorators.csrf import ensure_csrf_cookie
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.views import APIView
 
 from accounts.models import Profile
@@ -17,12 +19,22 @@ def get_token_view(request, *args, **kwargs):
 
 
 class FriendADDView(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
-
+    permission_classes = [IsAuthenticated]
     def post(self, request, *args, **kwargs):
-        user_profile = get_object_or_404(Profile)
-        if request.user.profile not in user_profile.relationships.all():
-            user_profile.relationships.add(request.user.profile)
-            return HttpResponse("ADDED")
+        user = get_object_or_404(User, pk=kwargs['pk'])
+        if user:
+            request.user.profile.relationships.add(user.profile)
+            return HttpResponse("Added")
         else:
-            return HttpResponseNotAllowed()
+            HttpResponseNotFound()
+
+
+class FriendRemoveView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request, *args, **kwargs):
+        user = get_object_or_404(User, pk=kwargs['pk'])
+        if user:
+            request.user.profile.relationships.remove(user.profile)
+            return HttpResponse('Deleted')
+        else:
+            return HttpResponseNotFound()
