@@ -251,3 +251,7 @@ nav a {
     border: solid 1px gray;
     padding: 5px 10px;
 }
+
+.hidden {
+    display: none;
+}

@@ -6,7 +6,11 @@
     <h1>Список пользователей: </h1>
     <div class="container">
         <table class="table" align="center">
+            {% if is_paginated %}
+                {% include 'partial/pagination.html' %}
+            {% endif %}
             {% for user in users %}
+                {% if request.user != user %}
                 <div class="card">
                     <div class="card-content">
                         <h1><a href="{% url 'accounts:detail' user.pk%}">{{ user.get_full_name }}</a></h1>
@@ -15,17 +19,26 @@
                         {% else %}
                             <img class="avatar" src="{% static 'img/empty.jpg' %}" width="150" height="150" alt="empty picture">
                         {% endif %}
-                        <p>Подпись: {{ photo.signature }}<br/>
-                        Автор: {{ photo.author }}<br/>
-                        Время создания: {{ photo.created_at }}</p>
-                        <h3><a href="#" class="card-button">Добавить в друзья</a></h3>
+{#                        {% with user|liked_by:user as liked %}#}
+
+                        <h3><a class="addfriend card-button" href="{% url 'api:friend_add' user.pk %}">Добавить в друзья</a></h3>
+{#                        {% endwith %}#}
+                        <p><a href="{% url 'accounts:detail' user.pk%}">Подробнее</a></p>
 {#                        <a class=" add_chosen button accept" style="color: white" href ="{% url 'webapp:photo_choose' photo.pk %}">ADD in FAV</a>#}
 {#                        <a class=" remove_chosen button cancel" style="color: white" href ="{% url 'webapp:photo_remove' photo.pk %}">Remove from FAV</a>#}
 
                         <br/>
                     </div>
                 </div>
+                {% endif %}
             {% endfor %}
+            {% if is_paginated %}
+                {% include 'partial/pagination.html' %}
+            {% endif %}
         </table>
     </div>
+{% endblock %}
+{% block scripts %}
+    <script type="application/javascript" src="{% static "js/friends.js" %}"></script>
+    <script type="application/javascript" src="{% static 'js/api_client.js' %}"></script>
 {% endblock %}
