@@ -29,7 +29,7 @@ class IndexView(SearchView):
         if form.is_valid():
             search = form.cleaned_data['search']
             if search:
-                data = data.filter(Q(name__icontains=search) | Q(description__icontains=search))
+                data = data.filter(Q(first_name__icontains=search) | Q(last_name__icontains=search))
         return data
 
 

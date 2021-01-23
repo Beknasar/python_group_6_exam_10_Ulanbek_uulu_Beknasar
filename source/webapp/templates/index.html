@@ -5,42 +5,33 @@
 {% block content %}
     <h1>Список пользователей: </h1>
     <div class="container">
-        <table class="table" align="center">
-            {% if is_paginated %}
-                {% include 'partial/pagination.html' %}
-            {% endif %}
-            {% for user in users %}
-                {% if request.user != user %}
-                <div class="card">
-                    <div class="card-content">
-                        <h1><a href="{% url 'accounts:detail' user.pk%}">{{ user.get_full_name }}</a></h1>
-                        {% if user.profile.avatar %}
-                            <img class="avatar" src="{{ user.profile.avatar.url }}" width="150" height="150" alt="user picture">
-                        {% else %}
-                            <img class="avatar" src="{% static 'img/empty.jpg' %}" width="150" height="150" alt="empty picture">
-                        {% endif %}
-{#                        {% with user|liked_by:user as liked %}#}
-{#                        <h3><a class="{% if added %}hidden{% endif %} card-button addFriend" href="{% url 'api:friend_add' user.pk %}">Добавить в друзья</a></h3>#}
-{#                        <h3><a class="{% if not added %}hidden{% endif %} card-button removeFriend" href="#">Удалить из друзей</a></h3>#}
-{#                        {% endwith %}#}
-                        {% if user.profile not in request.user.profile.relationships.all %}
-                            <h3><a href="{% url "api:friend_add" user.pk %}" class="card-button addFriend">Добавить в друзья</a></h3>
-                        {% else %}
-                            <h3><a href="{% url "api:friend_remove" user.pk %}" class="card-button removeFriend">Удалить из друзей</a></h3>
-                        {% endif %}
-                        <p><a href="{% url 'accounts:detail' user.pk%}">Подробнее</a></p>
-{#                        <a class=" add_chosen button accept" style="color: white" href ="{% url 'webapp:photo_choose' photo.pk %}">ADD in FAV</a>#}
-{#                        <a class=" remove_chosen button cancel" style="color: white" href ="{% url 'webapp:photo_remove' photo.pk %}">Remove from FAV</a>#}
-
-                        <br/>
-                    </div>
+        {% if is_paginated %}
+            {% include 'partial/pagination.html' %}
+        {% endif %}
+        {% for user in users %}
+            {% if request.user != user %}
+            <div class="card">
+                <div class="card-content">
+                    <h1><a href="{% url 'accounts:detail' user.pk%}">{{ user.get_full_name }}</a></h1>
+                    {% if user.profile.avatar %}
+                        <img class="avatar" src="{{ user.profile.avatar.url }}" width="150" height="150" alt="user picture">
+                    {% else %}
+                        <img class="avatar" src="{% static 'img/empty.jpg' %}" width="150" height="150" alt="empty picture">
+                    {% endif %}
+                    {% if user.profile in request.user.profile.relationships.all %}
+                        <h3><a href="{% url "api:friend_remove" user.pk %}" class="card-button removeFriend">Удалить из друзей</a></h3>
+                    {% else %}
+                        <h3><a href="{% url "api:friend_add" user.pk %}" class="card-button addFriend">Добавить в друзья</a></h3>
+                    {% endif %}
+                    <p><a href="{% url 'accounts:detail' user.pk%}">Подробнее</a></p>
+                    <br/>
                 </div>
-                {% endif %}
-            {% endfor %}
-            {% if is_paginated %}
-                {% include 'partial/pagination.html' %}
+            </div>
             {% endif %}
-        </table>
+        {% endfor %}
+        {% if is_paginated %}
+            {% include 'partial/pagination.html' %}
+        {% endif %}
     </div>
 {% endblock %}
 {% block scripts %}
