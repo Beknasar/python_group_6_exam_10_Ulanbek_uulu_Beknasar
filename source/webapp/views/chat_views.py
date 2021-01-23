@@ -35,7 +35,7 @@ class MessageSendView(CreateView):
     model = Messages
     permission_required = 'webapp.add_project'
 
-    def form_valid(self, form):
+    def form_valid(self, form, **kwargs):
         user = get_object_or_404(User, pk=self.kwargs.get('pk'))
         form.save()
         form.instance.from_user.add(self.request.user)
@@ -43,7 +43,7 @@ class MessageSendView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('chat.html', kwargs={'pk': self.object.pk})
+        return reverse('webapp:mail')
 
 
 class MailBox(DetailView):
@@ -55,8 +55,8 @@ class MailBox(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         other_user = get_object_or_404(User, pk=kwargs['pk'])
-        sent_messages = Messages.objects.filter(sender=self.request.user.profile, reciever=other_user.profile)
-        received_messages = Messages.objects.filter(receiver=self.request.user.profile, sender=other_user.profile)
+        sent_messages = Messages.objects.filter(from_user=self.request.user.profile, to_user=other_user.profile)
+        received_messages = Messages.objects.filter(to_user=self.request.user.profile, from_user=other_user.profile)
         context['sent_messages'] = sent_messages
         context['received_messages'] = received_messages
         # context['is_paginated'] = is_paginated
