@@ -5,6 +5,6 @@
 {% block content %}
     <h1>Create Message</h1>
 
-    {% url 'webapp:mail' as action_url %}
+    {% url 'webapp:send_mes' pk=user.pk as action_url %}
     {% include 'partial/form.html' with action_url=action_url form_method='post' %}
 {% endblock %}

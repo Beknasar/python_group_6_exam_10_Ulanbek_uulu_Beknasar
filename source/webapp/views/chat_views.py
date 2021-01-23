@@ -36,10 +36,12 @@ class MessageSendView(CreateView):
     permission_required = 'webapp.add_project'
 
     def form_valid(self, form, **kwargs):
+        message = form.save(commit=False)
         user = get_object_or_404(User, pk=self.kwargs.get('pk'))
-        form.save()
-        form.instance.from_user.add(self.request.user)
-        form.instance.to_user.add(user=user)
+        message.from_user =self.request.user.profile
+        message.to_user = user.profile
+        # form.save()
+        form.save_m2m()
         return super().form_valid(form)
 
     def get_success_url(self):

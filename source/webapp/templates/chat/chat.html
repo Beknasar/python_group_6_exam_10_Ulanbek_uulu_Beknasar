@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 
-{% block title %}View{% endblock %}
+{% block title %}MailBox{% endblock %}
 
 {% block menu %}
 {% endblock %}
 {% block content %}
     <div>
         {% for rev_sent in received_messages %}
-            <h1>Hello, world!</h1>
+            <h4>{{ rev_sent.pub_date }}</h4>
+            <p class="pre">{{ rev_sent.message }}</p>
         {% endfor %}
 
         {% if is_paginated %}
