@@ -15,8 +15,6 @@ from accounts.forms import MyUserCreationForm, UserChangeForm, ProfileChangeForm
 from .models import AuthToken, Profile
 
 
-
-
 class RegisterView(CreateView):
     model = User
     template_name = 'user_create.html'
@@ -62,7 +60,6 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'user_obj'
     paginate_related_by = 5
     paginate_related_orphans = 0
-
 
 
 class UserChangeView(UserPassesTestMixin, UpdateView):

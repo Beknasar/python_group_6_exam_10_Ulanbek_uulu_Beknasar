@@ -1,10 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Products{% endblock %}
+{% block styles %}<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">{% endblock %}
+{% block content %}
+    <h1>Список пользователей: </h1>
+    <div class="container">
+        <table class="table" align="center">
+            {% for user in users %}
+                <div class="card">
+                    <div class="card-content">
+                        <h1><a href="{% url 'accounts:detail' user.pk%}">{{ user.get_full_name }}</a></h1>
+                        {% if user.profile.avatar %}
+                            <img class="avatar" src="{{ user.profile.avatar.url }}" width="150" height="150" alt="user picture">
+                        {% else %}
+                            <img class="avatar" src="{% static 'img/empty.jpg' %}" width="150" height="150" alt="empty picture">
+                        {% endif %}
+                        <p>Подпись: {{ photo.signature }}<br/>
+                        Автор: {{ photo.author }}<br/>
+                        Время создания: {{ photo.created_at }}</p>
+                        <h3><a href="#" class="card-button">Добавить в друзья</a></h3>
+{#                        <a class=" add_chosen button accept" style="color: white" href ="{% url 'webapp:photo_choose' photo.pk %}">ADD in FAV</a>#}
+{#                        <a class=" remove_chosen button cancel" style="color: white" href ="{% url 'webapp:photo_remove' photo.pk %}">Remove from FAV</a>#}
 
-</body>
-</html>
+                        <br/>
+                    </div>
+                </div>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

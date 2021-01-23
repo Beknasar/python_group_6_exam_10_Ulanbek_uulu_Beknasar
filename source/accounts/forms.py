@@ -21,8 +21,10 @@ class MyUserCreationForm(UserCreationForm):
         first_name = cleaned_data.get('first_name')
         last_name = cleaned_data.get('last_name')
         if not first_name:
-            if not last_name:
-                errors.append(ValidationError('You must fill in at least one of the specified fields: last_name, first_name'))
+            errors.append(
+                ValidationError('You must fill in field: first_name'))
+        if not last_name:
+            errors.append(ValidationError('You must fill in field: last_name'))
         if not email:
             errors.append(ValidationError('This field is required: email.'))
         if errors:

@@ -88,24 +88,11 @@ body {
     color: #ffc122;
 }
 
-.card-button{
-	float: right;
-    color: #02918c;
-    margin-right: 10px;
-}
 
 .card-button:hover {
     color: black;
 }
 
-.product_view a{
-    color: #02918c;
-    text-decoration: none;
-}
-
-.product_view a:hover{
-    color: #ffc122;
-}
 
 .button {
     width:  298px;
